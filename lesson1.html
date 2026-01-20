@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 1 - Human Anatomy</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f4f4;margin:0;padding:0;}
+header{background:#007BFF;color:white;padding:20px;text-align:center;}
+#quiz-container{max-width:650px;margin:20px auto;background:white;border-radius:8px;padding:20px;box-shadow:0 0 12px rgba(0,0,0,0.1);}
+#question{font-size:18px;margin-bottom:15px;}
+.option{display:block;padding:10px;margin:8px 0;border:1px solid #007BFF;border-radius:5px;cursor:pointer;background:white;transition:0.2s;}
+.option:hover{background:#e0f0ff;}
+#feedback{margin-top:15px;font-weight:bold;}
+#explanation{margin-top:10px;background:#eef7ff;padding:10px;border-left:4px solid #007BFF;display:none;}
+#next-btn{margin-top:18px;padding:10px 22px;background:#007BFF;color:white;border:none;border-radius:6px;cursor:pointer;display:none;}
+#stats{margin-top:15px;font-weight:bold;}
+</style>
+</head>
+<body>
+
+<header>
+<h1>Lesson 1: Human Anatomy Basics</h1>
+<p>100 Questions | Learn & Test</p>
+</header>
+
+<div id="quiz-container">
+<div id="question">Loading...</div>
+<div id="options"></div>
+<div id="feedback"></div>
+<div id="explanation"></div>
+<button id="next-btn">Next Question</button>
+<div id="stats">Attempted: 0 | Correct: 0 | Wrong: 0</div>
+</div>
+
+<script>
+// Lesson 1 – Demo 10 questions (Add remaining 90 in same format)
+const quizData = [
+  {question:"Largest organ in human body?", options:["Liver","Skin","Heart","Lungs"], answer:"Skin", explanation:"Skin is the largest organ, protects body and regulates temperature."},
+  {question:"Blood cells fighting infection?", options:["RBC","WBC","Platelets","Plasma"], answer:"WBC", explanation:"White Blood Cells protect the body from infection."},
+  {question:"Functional unit of kidney?", options:["Neuron","Nephron","Alveoli","Hepatocyte"], answer:"Nephron", explanation:"Nephron filters blood and produces urine."},
+  {question:"Main pumping organ?", options:["Heart","Liver","Brain","Lungs"], answer:"Heart", explanation:"Heart pumps blood throughout the body."},
+  {question:"Oxygen carrying cells?", options:["RBC","WBC","Platelets","Plasma"], answer:"RBC", explanation:"Red Blood Cells carry oxygen from lungs to body."},
+  {question:"Smallest bone in human body?", options:["Stapes","Femur","Tibia","Ulna"], answer:"Stapes", explanation:"Stapes in the middle ear is the smallest bone."},
+  {question:"Number of human ribs?", options:["12","14","10","8"], answer:"12", explanation:"Humans have 12 pairs of ribs."},
+  {question:"Body system controlling hormones?", options:["Nervous","Endocrine","Respiratory","Circulatory"], answer:"Endocrine", explanation:"Endocrine system regulates hormones."},
+  {question:"Bone connecting arm to shoulder?", options:["Humerus","Clavicle","Scapula","Radius"], answer:"Clavicle", explanation:"Clavicle connects arm to shoulder."},
+  {question:"Cell type for carrying oxygen?", options:["RBC","WBC","Platelets","Neuron"], answer:"RBC", explanation:"Red blood cells carry oxygen to tissues."}
+  // Add 90 more MCQs here
+];
+
+let current=0,attempted=0,correct=0,wrong=0;
+const questionEl=document.getElementById('question');
+const optionsEl=document.getElementById('options');
+const feedbackEl=document.getElementById('feedback');
+const explanationEl=document.getElementById('explanation');
+const nextBtn=document.getElementById('next-btn');
+const statsEl=document.getElementById('stats');
+
+function updateStats(){
+  statsEl.textContent=`Attempted: ${attempted} | Correct: ${correct} | Wrong: ${wrong}`;
+}
+
+function loadQuestion(){
+  const q=quizData[current];
+  questionEl.textContent=q.question;
+  optionsEl.innerHTML='';
+  feedbackEl.textContent='';
+  explanationEl.style.display='none';
+  nextBtn.style.display='none';
+  q.options.forEach(opt=>{
+    const btn=document.createElement('button');
+    btn.textContent=opt;
+    btn.className='option';
+    btn.onclick=()=>checkAnswer(opt);
+    optionsEl.appendChild(btn);
+  });
+}
+
+function checkAnswer(selected){
+  const q=quizData[current];
+  attempted++;
+  if(selected===q.answer){
+    feedbackEl.textContent='✅ Correct!';
+    feedbackEl.style.color='green';
+    correct++;
+  } else {
+    feedbackEl.textContent=`❌ Incorrect. Correct Answer: ${q.answer}`;
+    feedbackEl.style.color='red';
+    wrong++;
+  }
+  explanationEl.textContent=q.explanation;
+  explanationEl.style.display='block';
+  updateStats();
+  nextBtn.style.display='block';
+}
+
+nextBtn.onclick=()=>{
+  current++;
+  if(current<quizData.length) loadQuestion();
+  else{
+    questionEl.textContent="🎉 Lesson Completed!";
+    optionsEl.innerHTML='';
+    feedbackEl.textContent='';
+    explanationEl.textContent='';
+    nextBtn.style.display='none';
+  }
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>
